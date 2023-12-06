@@ -1,0 +1,33 @@
+.title{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.title_text {
+    font-size: 24px; 
+    font-weight: bold;
+    color: #333; 
+  }
+
+  
+.play{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .play button{
+    background-color: coral;
+    border-radius: 5px;
+    border-style: none;
+    height: 40px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .play button:hover{
+    opacity: 0.8;
+  }
