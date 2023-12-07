@@ -6,13 +6,15 @@ const matchSchema = new mongoose.Schema({
     choosen:String,
     matchOver:Number,
     target:Number,
+    matchResult:String,
+    currentBattingTeam:String,
     teamA:{
         country: String,
         totalRuns:String,
         wicketsFallen:Number,
         overPlayed:Number,
         playerHistory:[
-        ]
+        ],
     },
     teamB:{
         country: String,
@@ -20,9 +22,23 @@ const matchSchema = new mongoose.Schema({
         wicketsFallen:Number,
         overPlayed:Number,
         playerHistory:[
+        ],
+    },
+    currentBatsman:{
+        strike:{
+          id: Number
+        },
+        nonStrike:{
+          id:Number
+        },
+        nextBatsman:{
+          index:Number
+        }
+      },
 
-        ]
-    }
+      currentBowler:{
+         id:Number
+      }
    
 })
 

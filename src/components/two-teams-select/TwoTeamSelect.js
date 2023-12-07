@@ -38,9 +38,10 @@ const TwoTeamsSelect = () => {
       tossTeam: randomTeam,
       choosen: batOrBowl,
     });
+
     console.log("match", match.data.result);
     router.push({
-      pathname: `play/${match.data.result._id}`,
+      pathname: `play/${match?.data.result._id}`,
     
     });
   };
