@@ -1,11 +1,24 @@
 import { matchRepository } from "../repositories/match-repository";
 
 export const createMatch = async (req, res) => {
-  const { teamA, teamB, matchOver, tossTeam, choosen } = req.body;
+  const { teamA,
+    teamB,
+    matchOver,
+    currentBattingTeam,
+    currentBowlingTeam,
+    strikeBatsman,
+    nonStrikeBatsman,
+    tossTeam,
+    choosen} = req.body;
+    console.log('strikeBatsman and nonStrikeBatsman',strikeBatsman,nonStrikeBatsman)
   try {
     const matchCreated = matchRepository.create({
       firstTeam:teamA,
       secondTeam:teamB,
+      currentBattingTeam,
+      currentBowlingTeam,
+      strikeBatsman,
+      nonStrikeBatsman,
       matchOver,
       tossTeam,
       choosen,

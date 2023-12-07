@@ -7,16 +7,44 @@ const create = async ({
   matchOver,
   tossTeam,
   choosen,
+  currentBattingTeam,
+  currentBowlingTeam,
+  strikeBatsman,
+  nonStrikeBatsman
 }) => {
+
+  console.log( 'on match repo',firstTeam,
+    secondTeam,
+    matchOver,
+    tossTeam,
+    choosen,
+    currentBattingTeam,
+    currentBowlingTeam,
+    strikeBatsman,
+    nonStrikeBatsman)
   const match = await Match.create({
     tossTeam,
     choosen,
     matchOver,
+    currentBattingTeam,
+    currentBowlingTeam,
     teamA: {
       country: firstTeam,
     },
     teamB: {
       country: secondTeam,
+    },
+
+    currentBatsman:{
+      strike:{
+        id: strikeBatsman.id
+      },
+      nonStrike:{
+        id:nonStrikeBatsman.id
+      },
+      nextBatsman:{
+        index:2
+      }
     },
   });
 

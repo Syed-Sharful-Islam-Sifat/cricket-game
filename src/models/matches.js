@@ -8,6 +8,7 @@ const matchSchema = new mongoose.Schema({
     target:Number,
     matchResult:String,
     currentBattingTeam:String,
+    currentBowlingTeam:String,
     teamA:{
         country: String,
         totalRuns:String,
@@ -37,7 +38,8 @@ const matchSchema = new mongoose.Schema({
       },
 
       currentBowler:{
-         id:Number
+         id:Number,
+         overStat:[]
       }
    
 })

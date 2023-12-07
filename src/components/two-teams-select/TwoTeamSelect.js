@@ -31,17 +31,39 @@ const TwoTeamsSelect = () => {
   const handleToss = async () => {
     const randomTeam = Math.random() < 0.5 ? teamA : teamB;
     const batOrBowl = Math.random() < 0.5 ? "Bat" : "Bowl";
+ 
+    let strikeBatsman,nonStrikeBatsman,currentBattingTeam,currentBowlingTeam;
+    if(randomTeam===teamA){
+        if(batOrBowl==='Bat'){
+          strikeBatsman = players[teamA][0];
+          nonStrikeBatsman = players[teamA][1];
+          currentBattingTeam = teamA;
+          currentBowlingTeam = teamB;
+        }else{
+          strikeBatsman = players[teamB][0];
+          nonStrikeBatsman = players[teamB][1];
+          currentBowlingTeam = teamA;
+          currentBattingTeam = teamB;
+        }
+      }
+
+      console.log('strikeBatsman nonStrikeBatsman',strikeBatsman,nonStrikeBatsman,teamA,teamB,currentBattingTeam,currentBowlingTeam)
+    
     const match = await matchCreate({
       teamA,
       teamB,
       matchOver,
+      currentBattingTeam,
+      currentBowlingTeam,
+      strikeBatsman,
+      nonStrikeBatsman,
       tossTeam: randomTeam,
       choosen: batOrBowl,
     });
 
     console.log("match", match.data.result);
     router.push({
-      pathname: `play/${match?.data.result._id}`,
+      pathname: `play/${match?.data.result?._id}`,
     
     });
   };
