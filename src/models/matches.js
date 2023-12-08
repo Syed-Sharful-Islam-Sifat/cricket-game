@@ -7,23 +7,16 @@ const matchSchema = new mongoose.Schema({
     matchOver:Number,
     target:Number,
     matchResult:String,
-    currentBattingTeam:String,
-    currentBowlingTeam:String,
-    teamA:{
-        country: String,
-        totalRuns:String,
+    battingFirstTeam:String,
+    battingSecondTeam:String,
+    currentBattingTeam:{
+        country:String,
+        totalRuns:Number,
         wicketsFallen:Number,
-        overPlayed:Number,
-        playerHistory:[
-        ],
+        oversPlayed:Number,
     },
-    teamB:{
+    currentBowlingTeam:{
         country: String,
-        totalRuns:String,
-        wicketsFallen:Number,
-        overPlayed:Number,
-        playerHistory:[
-        ],
     },
     currentBatsman:{
         strike:{
@@ -38,12 +31,19 @@ const matchSchema = new mongoose.Schema({
       },
 
       currentBowler:{
-         id:Number,
-         overStat:[]
-      }
+        id:Number,
+        overStat:[]
+      },
+      lastBowler:{
+        id:Number
+      },
+
+      playerHistory:[
+
+      ]
    
 })
 
-const Match = mongoose.models?.Match|| mongoose.model('Match',matchSchema);
+const Match = mongoose.models?.Match || mongoose.model('Match',matchSchema);
 
 export default Match;

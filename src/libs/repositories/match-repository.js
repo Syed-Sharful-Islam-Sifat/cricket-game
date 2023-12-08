@@ -7,8 +7,8 @@ const create = async ({
   matchOver,
   tossTeam,
   choosen,
-  currentBattingTeam,
-  currentBowlingTeam,
+  batFirst,
+  batSecond,
   strikeBatsman,
   nonStrikeBatsman
 }) => {
@@ -18,21 +18,25 @@ const create = async ({
     matchOver,
     tossTeam,
     choosen,
-    currentBattingTeam,
-    currentBowlingTeam,
+    batFirst,
+    batSecond,
     strikeBatsman,
     nonStrikeBatsman)
   const match = await Match.create({
     tossTeam,
     choosen,
     matchOver,
-    currentBattingTeam,
-    currentBowlingTeam,
-    teamA: {
-      country: firstTeam,
+    battingFirstTeam:batFirst,
+    battingSecondTeam:batSecond,
+    currentBattingTeam:{
+      country:batFirst,
+      totalRuns:0,
+      wicketsFallen:0,
+      oversPlayed:0,
     },
-    teamB: {
-      country: secondTeam,
+
+    currentBowlingTeam:{
+     country:batSecond
     },
 
     currentBatsman:{
@@ -48,11 +52,10 @@ const create = async ({
     },
   });
 
-  await match.teamA.playerHistory.push(...players[firstTeam])
-  await match.teamB.playerHistory.push(...players[secondTeam])
-  await match.save();
-  console.log({ repoResult: match ,firstTeam,secondTeam});
+  
 
+  await match.playerHistory.push(...players[firstTeam],...players[secondTeam]);
+  await match.save();
   return match;
 };
 
@@ -60,14 +63,33 @@ const get = async ({ matchId }) => {
   const matchData = await Match.findById(matchId);
   return matchData;
 };
-export const update = async ({batsman,bowler,score,matchId}) => {
-  console.log('batsman bowler score matchId',batsman,bowler,score,matchId,batTeam,bowlTeam);
-  const matchData = await Match.findById(matchId);
-  console.log('matchData on update',matchData);
+export const updatePlayer = async ({matchId,strikeId,score,bowler_id}) => {
+  console.log('bowler_id on updatePlayerRun',bowler_id);
+  const matchData = await Match.findByIdAndUpdate(
+    matchId,
+    {
+      $inc: {
+        [`playerHistory.$[element].runs`]: score === 'W' ? 0 : score,
+        [`playerHistory.$[element].ballPlayed`]: 1,
+        [`playerHistory.$[element2].runGiven`]: score === 'W' ? 0 : score,
+        [`playerHistory.$[element2].wickets`]: score === 'W' ? 1 : 0,
+        [`playerHistory.$[element2].overs`]: 1,
+      },
+
+    },
+    {
+      arrayFilters: [
+        { "element.id": strikeId },
+        {"element2.id":bowler_id}
+    ],
+      new: true, // Return the modified document
+    }
+  );
+
   return matchData;
 };
 export const matchRepository = {
   create,
   get,
-  update
+  updatePlayer
 };

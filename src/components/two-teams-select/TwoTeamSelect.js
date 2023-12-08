@@ -31,30 +31,50 @@ const TwoTeamsSelect = () => {
   const handleToss = async () => {
     const randomTeam = Math.random() < 0.5 ? teamA : teamB;
     const batOrBowl = Math.random() < 0.5 ? "Bat" : "Bowl";
- 
-    let strikeBatsman,nonStrikeBatsman,currentBattingTeam,currentBowlingTeam;
-    if(randomTeam===teamA){
-        if(batOrBowl==='Bat'){
-          strikeBatsman = players[teamA][0];
-          nonStrikeBatsman = players[teamA][1];
-          currentBattingTeam = teamA;
-          currentBowlingTeam = teamB;
-        }else{
-          strikeBatsman = players[teamB][0];
-          nonStrikeBatsman = players[teamB][1];
-          currentBowlingTeam = teamA;
-          currentBattingTeam = teamB;
-        }
-      }
 
-      console.log('strikeBatsman nonStrikeBatsman',strikeBatsman,nonStrikeBatsman,teamA,teamB,currentBattingTeam,currentBowlingTeam)
-    
+    let strikeBatsman, nonStrikeBatsman, batFirst, batSecond;
+    if (randomTeam === teamA) {
+      if (batOrBowl === "Bat") {
+        strikeBatsman = players[teamA][0];
+        nonStrikeBatsman = players[teamA][1];
+        batFirst = teamA;
+        batSecond = teamB;
+      } else {
+        strikeBatsman = players[teamB][0];
+        nonStrikeBatsman = players[teamB][1];
+        batSecond = teamA;
+        batFirst = teamB;
+      }
+    } else {
+      if (batOrBowl === "Bat") {
+        strikeBatsman = players[teamB][0];
+        nonStrikeBatsman = players[teamB][1];
+        batFirst = teamB;
+        batSecond = teamA;
+      } else {
+        strikeBatsman = players[teamA][0];
+        nonStrikeBatsman = players[teamA][1];
+        batSecond = teamB;
+        batFirst = teamA;
+      }
+    }
+
+    console.log(
+      "strikeBatsman nonStrikeBatsman",
+      strikeBatsman,
+      nonStrikeBatsman,
+      teamA,
+      teamB,
+      batFirst,
+      batSecond
+    );
+
     const match = await matchCreate({
       teamA,
       teamB,
       matchOver,
-      currentBattingTeam,
-      currentBowlingTeam,
+      batFirst,
+      batSecond,
       strikeBatsman,
       nonStrikeBatsman,
       tossTeam: randomTeam,
@@ -64,7 +84,6 @@ const TwoTeamsSelect = () => {
     console.log("match", match.data.result);
     router.push({
       pathname: `play/${match?.data.result?._id}`,
-    
     });
   };
 

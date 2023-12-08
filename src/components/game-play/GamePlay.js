@@ -1,97 +1,108 @@
-import { getMatchData, updateMatchData } from "@/libs/services/match-service";
+import { getMatchData } from "@/libs/services/match-service";
 import React from "react";
 import styles from "../game-play/game-play.module.css";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { players } from "@/libs/data";
-import { updatePlayerData } from "@/libs/actions/match-action";
+import {
+  updateMatch,
+  updatePlayerData,
+  updateRun,
+} from "@/libs/actions/match-action";
+import Link from "next/link";
 const GamePlay = ({ data }) => {
-
-  console.log('data on GamePlay', data);
-  const [batTeam, setBatTeam] = useState(data?.currentBattingTeam);
-  const [bowlTeam, setBowlTeam] = useState(data?.currentBowlingTeam);
-  const [strikeBatsman, setStrikeBatsman] = useState()
-  const [nonStrikeBatsman, setNonStrikeBatsman] = useState()
-  const [currentBowler, setCurrentBowler] = useState();
+  console.log("data on GamePlay", data);
+  const [batTeam, setBatTeam] = useState(data.currentBattingTeam.country);
+  const [bowlTeam, setBowlTeam] = useState(data?.currentBowlingTeam.country);
+  const [battingTeamScores, setBattingTeamScores] = useState({
+    ...data.currentBattingTeam,
+  });
+  const [wicketsFallen, setWicketsFallen] = useState();
+  const [lastBowler, setLastBowler] = useState();
+  const [totalRuns, setTotalRuns] = useState();
+  const [tossDecision, setTossDecision] = useState(
+    `${data?.tossTeam} has won the toss and choosen ${data?.choosen} first`
+  );
+  const [matchOver, setMatchOver] = useState(data?.matchOver);
+  const [target, setTarget] = useState(null);
+  const [matchResult, setMatchResult] = useState(`${data.matchResult}`);
+  const [overStat, setOverStat] = useState([...data.currentBowler.overStat]);
   const strike_id = data.currentBatsman.strike.id;
   const nonStrike_id = data.currentBatsman.nonStrike.id;
-  
-  if (batTeam === data.teamA.country) {
-    const firstBatsman = data.teamA.playerHistory.find((player) => player.id === strike_id);
-    const secondBatsman = data.teamA.playerHistory.find((player) => player.id === nonStrike_id);
-    if(data?.currentbowler?.id){
-
-    }
-    setStrikeBatsman(firstBatsman);
-    setNonStrikeBatsman(secondBatsman);
-  } else {
-    const firstBatsman = data.teamB.playerHistory.find((player) => player.id === strike_id);
-    const secondBatsman = data.teamB.playerHistory.find((player) => player.id === nonStrike_id);
-    setStrikeBatsman(firstBatsman);
-    setNonStrikeBatsman(secondBatsman);
-  }
+  const bowlerId = data.currentBowler.id;
+  const lastBowlerId = data?.lastBowler?.id;
+  //   find opening batsman //
+  const firstBatsman = data.playerHistory.find(
+    (player) => player.id === strike_id
+  );
+  const secondBatsman = data.playerHistory.find(
+    (player) => player.id === nonStrike_id
+  );
+  //find currentbowler
+  const bowler = data.playerHistory.find((player) => player.id === bowlerId);
+  const [strikeBatsman, setStrikeBatsman] = useState(firstBatsman);
+  const [nonStrikeBatsman, setNonStrikeBatsman] = useState(secondBatsman);
+  const [currentBowler, setCurrentBowler] = useState({ ...bowler });
+  const [bowlCount, setBowlCount] = useState(0);
+  console.log("bowlCount", bowlCount);
+  const randomScores = [0, 1, 2, 3, 4, 6, "W"];
   const handleBowling = async () => {
     const randomIndex = Math.floor(Math.random() * randomScores.length);
-    console.log("on handleBowling", randomScores[randomIndex]);
-    setOverStat((prevOverStat) => [...prevOverStat, randomScores[randomIndex]]);
-
-    setScore(randomScores[randomIndex]);
 
     if (typeof randomScores[randomIndex] === "number") {
-      setTotalRuns(totalRuns + randomScores[randomIndex]);
-    }
-    if (
-      typeof randomScores[randomIndex] === "number" ||
-      randomScores[randomIndex] === "W"
-    ) {
-      setBowlCount(bowlCount + 1);
-    }
+      const updatedData = await updateMatch({
+        score: randomScores[randomIndex],
+        matchId: data?._id,
+        bowlCount,
+        strikeId: strikeBatsman.id,
+        nonStrikeId: nonStrikeBatsman.id,
+        bowler_id: currentBowler?.id,
+      });
 
-    if (randomScores[randomIndex] === "W") {
-      setWickets(wickets + 1);
+    
+      console.log("data", updatedData);
+    } else {
     }
-
-    const matchData = await updatePlayerData({ batsman: currentBatsman, bowler: currentBowler, score: randomScores[randomIndex], matchId: data._id, batTeam, bowlTeam })
   };
 
   const handleBowlerSelect = (e) => {
     const selectedValue = e.target.value;
 
-    const [selectedId, selectedName] = selectedValue.split('-');
+    let [selectedId, selectedName] = selectedValue.split("-");
     if (selectedValue) {
       console.log("Selected ID:", selectedId);
       console.log("Selected Name:", selectedName);
 
-      if (currentBowler.bowler.id) {
-        setCurrentBowler({
-          ...currentBowler,
-          lastBowler: { ...currentBowler.bowler },
-          bowler: {
-            id: selectedId,
-            name: selectedName
-          }
-        })
+      if (currentBowler?.id) {
       } else {
-        setCurrentBowler({
-          ...currentBowler,
-          bowler: {
-            id: selectedId,
-            name: selectedName
-          }
-        })
+        const selectedPlayer = data?.playerHistory.find(
+          (player) => player.id === parseInt(selectedId)
+        );
+        console.log(
+          "selectedPlayer",
+          selectedPlayer,
+          data.playerHistory,
+          typeof selectedId
+        );
+        setCurrentBowler({ ...selectedPlayer });
       }
     }
-  }
+  };
 
+  console.log("currenBowler", currentBowler);
 
   return (
     <div className={styles.playContainer}>
-      {/* <div className={styles.bowlerSelectAndScore}>
+      <div className={styles.bowlerSelectAndScore}>
         <div className={styles.bolwerSelect}>
           <select className={styles.dropdown} onChange={handleBowlerSelect}>
             <option value="">Select Bowler</option>
             {players[bowlTeam]?.map((player) => (
-              <option key={player.id} value={`${player.id}-${player.name}`} disabled={bowlCount>0}>
+              <option
+                key={player.id}
+                value={`${player.id}-${player.name}`}
+                disabled={bowlCount > 0}
+              >
                 {player.name}
               </option>
             ))}
@@ -107,16 +118,16 @@ const GamePlay = ({ data }) => {
               <h4>Scorecard</h4>
               <div className={styles.scoreDetails}>
                 <p className={styles.totalScore}>
-                  {batTeam}: {totalRuns}/{wickets} overs:{overs}.{bowlCount}
+                  {batTeam}: {battingTeamScores.totalRuns}/
+                  {battingTeamScores.wicketsFallen} overs:
+                  {battingTeamScores.oversPlayed}.{bowlCount}
                 </p>
 
                 <p className={styles.strike}>
-                  {currentBatsman?.strikeBatsman?.name} :{" "}
-                  {currentBatsman?.strikeBatsman?.runs}
+                  {strikeBatsman?.name} : {strikeBatsman?.runs}
                 </p>
                 <p className={styles.strike}>
-                  {currentBatsman?.nonStrikeBatsman?.name} :{" "}
-                  {currentBatsman?.nonStrikeBatsman?.runs}
+                  {nonStrikeBatsman?.name} : {nonStrikeBatsman?.runs}
                 </p>
               </div>
               <div className={styles.target}>
@@ -129,7 +140,7 @@ const GamePlay = ({ data }) => {
                 <div className={styles.batting}>
                   <button
                     onClick={handleBowling}
-                    disabled={matchResult !== null|| bowlCount === 6 || !currentBowler.bowler.id}
+                    //disabled={matchResult !== null|| bowlCount === 6 || !currentBowler.bowler.id}
                   >
                     Bat
                   </button>
@@ -138,7 +149,7 @@ const GamePlay = ({ data }) => {
                 <div className={styles.bowl}>
                   <button
                     onClick={handleBowling}
-                    disabled={matchResult !== null || bowlCount === 6 || !currentBowler.bowler.id}
+                    //  disabled={matchResult !== null || bowlCount === 6 || !currentBowler.bowler.id}
                   >
                     Bowl
                   </button>
@@ -148,7 +159,7 @@ const GamePlay = ({ data }) => {
 
             <div className={styles.bowlerContainer}>
               <div className={styles.bowler}>
-                <h4>{currentBowler.bowler?.name}</h4>
+                <h4>{currentBowler?.name}</h4>
                 <div className={styles.bowlCount}>
                   {overStat.map((stat, i) => (
                     <p key={i}>{stat}</p>
@@ -165,7 +176,7 @@ const GamePlay = ({ data }) => {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
