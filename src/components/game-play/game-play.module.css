@@ -5,9 +5,15 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 5rem;
+
  
   }
-  
+  .bolwerSelect{
+    margin-top: 14.5%;
+  }
   /* Toss Styles */
   .toss {
     background-color: #3498db; /* Nice blue color */
@@ -24,7 +30,7 @@
     flex-wrap: wrap;
     justify-content: space-between;
   }
-  
+
   /* Score Card Styles */
   .scoreCard {
     background-color: #233142;  /* Light grey background */
@@ -211,4 +217,17 @@
     background-color: rgba(255, 255, 255, 0.1); /* White background with opacity on hover */
   }
   
+  .newInnings button {
+    background-color: #27ae60; /* Green background */
+    color: #fff; /* White text color */
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+  }
   
+  .newInnings button:hover {
+    background-color: #219653; /* Darker green on hover */
+  }

@@ -12,7 +12,7 @@ const TwoTeamsSelect = () => {
   const [playersB, setPlayersB] = useState([]);
   const [teamA, setTeamA] = useState("");
   const [teamB, setTeamB] = useState("");
-  const [matchOver, setMatchOver] = useState();
+  const [matchOver, setMatchOver] = useState(1);
   const router = useRouter();
 
   const handleTeamSelect = (choosenTeam, type) => {
@@ -137,7 +137,7 @@ const TwoTeamsSelect = () => {
                   </select>
                 </div>
                 <div className={styles.toss}>
-                  <button onClick={handleToss}>toss and play</button>
+                  <button onClick={handleToss}>Toss and Play</button>
                 </div>
               </div>
             ) : null}

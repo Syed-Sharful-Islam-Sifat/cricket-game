@@ -48,7 +48,16 @@
     border: none;
     border-radius: 5px;
     font-size: 16px;
+    font-weight: bold;
     transition: background-color 0.3s ease;
+  }
+
+  .over{
+   
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+   
   }
   
   .toss button:hover {
@@ -76,6 +85,14 @@
     font-size: 18px;
     font-weight: bold;
   }
+  .overandtoss{
+    display: flex;
+ 
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
   
   @media (max-width: 768px) {
     .team_players {

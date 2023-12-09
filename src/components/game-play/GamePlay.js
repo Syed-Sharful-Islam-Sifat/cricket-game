@@ -144,105 +144,107 @@ const GamePlay = ({ data }) => {
 
   return (
     <div className={styles.playContainer}>
+
+          <div className={styles.bolwerSelect}>
+              <select className={styles.dropdown} onChange={handleBowlerSelect}>
+                <option value="">Select Bowler</option>
+                {players[bowlTeam]?.map((player) => (
+                  <option
+                    key={player.id}
+                    value={`${player.id}-${player.name}`}
+                    disabled={bowlCount > 0 || lastBowler?.id || matchResult}
+                  >
+                    {player.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+      <div className={styles.score}>
+        <div className={styles.toss}>
+          {tossDecision ? <p>{tossDecision}</p> : null}
+        </div>
+        <div className={styles.batsman}>
      
-        <div className={styles.bolwerSelect}>
-          <select className={styles.dropdown} onChange={handleBowlerSelect}>
-            <option value="">Select Bowler</option>
-            {players[bowlTeam]?.map((player) => (
-              <option
-                key={player.id}
-                value={`${player.id}-${player.name}`}
-                disabled={bowlCount > 0 || lastBowler?.id || matchResult}
-              >
-                {player.name}
-              </option>
-            ))}
-          </select>
-        </div>
 
-        <div className={styles.score}>
-          <div className={styles.toss}>
-            {tossDecision ? <p>{tossDecision}</p> : null}
+          <div className={styles.scoreCard}>
+            <h4>Scorecard</h4>
+            <div className={styles.scoreDetails}>
+              <p className={styles.totalScore}>
+                {batTeam}: {battingTeamScores.totalRuns}/
+                {battingTeamScores.wicketsFallen} overs:
+                {oversPlayed}.{bowlCount}
+              </p>
+
+              <p className={styles.strike}>
+                {strikeBatsman?.name} : {strikeBatsman?.runs}
+              </p>
+              <p className={styles.strike}>
+                {nonStrikeBatsman?.name} : {nonStrikeBatsman?.runs}
+              </p>
+            </div>
+            <div className={styles.target}>
+              {target ? <p>Target: {target}</p> : null}
+            </div>
+            <div className={styles.result}>
+              {matchResult ? <p>{matchResult}</p> : null}
+            </div>
+            <div className={styles.batAndBowl}>
+              <div className={styles.batting}>
+                <button
+                  onClick={handleBowling}
+                  disabled={matchResult || bowlCount === 6 || !currentBowler.id || newInnings || oversPlayed === matchOver * 6}
+                >
+                  Bat
+                </button>
+              </div>
+
+              <div className={styles.bowl}>
+                <button
+                  onClick={handleBowling}
+                  disabled={matchResult || bowlCount === 6 || !currentBowler.id || newInnings || oversPlayed === matchOver * 6}
+                >
+                  Bowl
+                </button>
+              </div>
+            </div>
+            {newInnings ? (
+              <div className={styles.newInnings}>
+                <button onClick={handleSecondInnings}>
+                  start 2nd Innings
+                </button>
+              </div>
+            ) : null}
           </div>
-          <div className={styles.batsman}>
-            
-            <div className={styles.scoreCard}>
-              <h4>Scorecard</h4>
-              <div className={styles.scoreDetails}>
-                <p className={styles.totalScore}>
-                  {batTeam}: {battingTeamScores.totalRuns}/
-                  {battingTeamScores.wicketsFallen} overs:
-                  {oversPlayed}.{bowlCount}
-                </p>
+          
 
-                <p className={styles.strike}>
-                  {strikeBatsman?.name} : {strikeBatsman?.runs}
-                </p>
-                <p className={styles.strike}>
-                  {nonStrikeBatsman?.name} : {nonStrikeBatsman?.runs}
-                </p>
-              </div>
-              <div className={styles.target}>
-                {target ? <p>Target: {target}</p> : null}
-              </div>
-              <div className={styles.result}>
-                {matchResult ? <p>{matchResult}</p> : null}
-              </div>
-              <div className={styles.batAndBowl}>
-                <div className={styles.batting}>
-                  <button
-                    onClick={handleBowling}
-                    disabled={matchResult || bowlCount === 6 || !currentBowler.id || newInnings || oversPlayed === matchOver * 6}
-                  >
-                    Bat
-                  </button>
-                </div>
 
-                <div className={styles.bowl}>
-                  <button
-                    onClick={handleBowling}
-                    disabled={matchResult || bowlCount === 6 || !currentBowler.id || newInnings || oversPlayed === matchOver * 6}
-                  >
-                    Bowl
-                  </button>
-                </div>
-              </div>
-              {newInnings ? (
-                <div className={styles.newInnings}>
-                  <button onClick={handleSecondInnings}>
-                    start 2nd Innings
-                  </button>
-                </div>
-              ) : null}
-            </div>
+          <div className={styles.bowlerContainer}>
+            <div className={styles.bowler}>
+              {currentBowler?.name ? (
+                <h4>{currentBowler.name}</h4>
+              ) : (
+                !newInnings && !matchResult ? (
+                  <h4>Please select a new bowler</h4>
+                ) : null
+              )}
 
-            <div className={styles.bowlerContainer}>
-              <div className={styles.bowler}>
-                {currentBowler?.name ? (
-                  <h4>{currentBowler.name}</h4>
-                ) : (
-                  !newInnings && !matchResult ? (
-                    <h4>Please select a new bowler</h4>
-                  ) : null
-                )}
-
-                <div className={styles.bowlCount}>
-                  {overStat.map((stat, i) => (
-                    <p key={i}>{stat}</p>
-                  ))}
-                </div>
+              <div className={styles.bowlCount}>
+                {overStat.map((stat, i) => (
+                  <p key={i}>{stat}</p>
+                ))}
               </div>
-            </div>
-            <div className={styles.summaryLink}>
-              {matchResult ? (
-                <Link href={"/matchSummary"}>
-                  <button>Match Summary</button>
-                </Link>
-              ) : null}
             </div>
           </div>
+          <div className={styles.summaryLink}>
+            {matchResult ? (
+              <Link href={"/matchSummary"}>
+                <button>Match Summary</button>
+              </Link>
+            ) : null}
+          </div>
         </div>
-      
+      </div>
+
     </div>
   );
 };
