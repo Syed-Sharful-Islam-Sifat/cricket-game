@@ -15,6 +15,12 @@ const matchSchema = new mongoose.Schema({
         wicketsFallen:Number,
         oversPlayed:Number,
     },
+    BattedFirstScores:{
+      country:String,
+      totalRuns:Number,
+      wicketsFallen:Number,
+      oversPlayed:Number
+    },
     currentBowlingTeam:{
         country: String,
     },

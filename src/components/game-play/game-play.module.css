@@ -5,6 +5,7 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+ 
   }
   
   /* Toss Styles */
@@ -152,8 +153,62 @@
 
   .bowlerSelectAndScore{
     display: flex;
+    gap: 3rem;
   }
 
-
+  .bolwerSelect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .dropdown {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #3498db; /* Blue border */
+    border-radius: 5px;
+    background-color: #fff; /* White background */
+    color: #333; /* Dark text color */
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effect */
+    position: relative;
+  }
+  
+  .dropdown:hover,
+  .dropdown:focus {
+    border-color: #219653; /* Darker green border on hover or focus */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Light box shadow on hover or focus */
+  }
+  
+  /* Styling the dropdown options */
+  .dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #000; /* Black background for options */
+    border: 1px solid #3498db; /* Blue border */
+    border-top: none; /* No top border for the options */
+    border-radius: 0 0 5px 5px;
+    color: #fff; /* White text color */
+    z-index: 1; /* Ensure the options appear above other elements */
+    display: none;
+  }
+  
+  .dropdown:hover .dropdown-options {
+    display: block; /* Show options on hover */
+  }
+  
+  /* Style each option in the dropdown */
+  .dropdown-options option {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+  }
+  
+  .dropdown-options option:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* White background with opacity on hover */
+  }
   
   

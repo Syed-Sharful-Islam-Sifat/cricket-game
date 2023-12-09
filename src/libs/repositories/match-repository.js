@@ -88,8 +88,10 @@ export const updatePlayer = async ({matchId,strikeId,score,bowler_id}) => {
 
   return matchData;
 };
+
 export const matchRepository = {
   create,
   get,
-  updatePlayer
+  updatePlayer,
+
 };
