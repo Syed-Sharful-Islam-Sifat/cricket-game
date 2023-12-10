@@ -1,0 +1,29 @@
+.playerDetails{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  .table th, .table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .table th {
+    background-color: darkgray
+  }
+  .table td{
+    background-color:  #ffa60063
+  }
+  .row:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  

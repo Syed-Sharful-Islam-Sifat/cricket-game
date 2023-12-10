@@ -96,10 +96,10 @@ const GamePlay = ({ data }) => {
     const selectedValue = e.target.value;
 
     let [selectedId, selectedName] = selectedValue.split("-");
+        
     if (selectedValue) {
       console.log("Selected ID:", selectedId);
       console.log("Selected Name:", selectedName);
-
 
       const selectedPlayer = data?.playerHistory.find(
         (player) => player.id === parseInt(selectedId)
@@ -236,11 +236,11 @@ const GamePlay = ({ data }) => {
             </div>
           </div>
           <div className={styles.summaryLink}>
-            {matchResult ? (
-              <Link href={"/matchSummary"}>
+          
+              <Link href={`/play/${data._id}/match-summary`}>
                 <button>Match Summary</button>
               </Link>
-            ) : null}
+            
           </div>
         </div>
       </div>

@@ -1,0 +1,12 @@
+.matchScoreCard{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: black;
+    color: white;
+}
+
+.matchScoreCard h2{
+    color: green
+}
