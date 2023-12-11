@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 import TeamSelect from "../team-select/TeamSelect";
 import styles from "../two-teams-select/twoteamSelect.module.css";
 import { players } from "../../libs/data";
-import { teams } from "../../libs/data";
 import { useRouter } from "next/router";
 import { overs } from "../../libs/data";
 import Link from "next/link";
 import { matchCreate } from "@/libs/actions/match-action";
-const TwoTeamsSelect = () => {
+const TwoTeamsSelect = ({teams}) => {
   const [playersA, setPlayersA] = useState([]);
   const [playersB, setPlayersB] = useState([]);
   const [teamA, setTeamA] = useState("");
   const [teamB, setTeamB] = useState("");
   const [matchOver, setMatchOver] = useState(1);
+  
   const router = useRouter();
 
   const handleTeamSelect = (choosenTeam, type) => {
-    console.log("choosenTeam and type on handleTeamSelect", choosenTeam, type);
+  
 
     if (type === "A") {
       setTeamA(choosenTeam);
@@ -59,16 +59,6 @@ const TwoTeamsSelect = () => {
       }
     }
 
-    console.log(
-      "strikeBatsman nonStrikeBatsman",
-      strikeBatsman,
-      nonStrikeBatsman,
-      teamA,
-      teamB,
-      batFirst,
-      batSecond
-    );
-
     const match = await matchCreate({
       teamA,
       teamB,
@@ -81,9 +71,8 @@ const TwoTeamsSelect = () => {
       choosen: batOrBowl,
     });
 
-    console.log("match", match.data.result);
     router.push({
-      pathname: `play/${match?.data.result?._id}`,
+      pathname: `match/${match?.data.result?._id}`,
     });
   };
 

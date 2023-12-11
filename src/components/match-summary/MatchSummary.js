@@ -2,8 +2,6 @@ import React from 'react'
 import styles from '../match-summary/match-summary.module.css'
 import TeamStat from '../team-stat/TeamStat'
 const MatchSummary = ({ matchData }) => {
-
-    console.log('matchData on match Summary', matchData)
     return (
         <div className={styles.matchScoreCard}>
             {matchData.matchResult?(

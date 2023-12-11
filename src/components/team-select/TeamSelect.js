@@ -9,7 +9,7 @@ export default function TeamSelect({team , opponent , handleTeamSelect}) {
     
     handleTeamSelect(e.target.value,team);
   };
-  console.log('team and opponent',team,opponent);
+ 
   return (
     <div className={styles.container}>
         <select className={styles.dropdown} onChange={handleSelectChange}>

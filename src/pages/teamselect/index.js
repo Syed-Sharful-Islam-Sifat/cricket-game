@@ -1,12 +1,21 @@
-import React from 'react'
-import '../../components/two-teams-select/TwoTeamSelect'
-import TwoTeamsSelect from '../../components/two-teams-select/TwoTeamSelect'
-const TeamsSelect = () => {
+import React from "react";
+import "../../components/two-teams-select/TwoTeamSelect";
+import TwoTeamsSelect from "../../components/two-teams-select/TwoTeamSelect";
+import { teams } from "@/libs/data";
+const TeamsSelect = ({ data }) => {
   return (
     <>
-      <TwoTeamsSelect/>
+      <TwoTeamsSelect teams={data} />
     </>
-  )
-}
+  );
+};
 
-export default TeamsSelect
+export const getStaticProps = () => {
+  return {
+    props: {
+      data: teams,
+    },
+  };
+};
+
+export default TeamsSelect;
